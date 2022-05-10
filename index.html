@@ -53,57 +53,23 @@
             </div>
         </div>
         <div class="nav justify-content-center">
-            <p>Ordem: &nbsp;<input id="number">&nbsp;</p><br>
+            <p>Ordem: &nbsp;<input id="cols">&nbsp;</p><br>
             <!-- <p>Entre com a função &nbsp;<input id="inputFunc">&nbsp;</p><br>
             <p >X Inicial (A): &nbsp;<input id="valueA">&nbsp;</p><br>
             <p >X Inicial (B): &nbsp;<input id="valueB">&nbsp;</p><br>
             <p >Precisão: &nbsp;<input id="precision">&nbsp;</p><br> -->
         </div>
         <div class="nav justify-content-center">
-            <button type="button" class="btn btn-success" onclick="">Calcula</button>&nbsp;<br>
+            <button type="button" class="btn btn-success" onclick="getFields()">Calcula</button>&nbsp;<br>
             <button type="button" class="btn btn-success" onclick="addFields()">Matriz</button>&nbsp;<br>
             <button type="button" class="btn btn-success" onclick="window.location.href=window.location.href">Limpar</button><br>
             <p id="resultadosFunc"></p>
         </div><br>
-        <div id="container">
-            <div class="grid-item">Iteração</div>
-              <div class="grid-item">XA</div>
-              <div class="grid-item">f(XA)</div>
-              <div class="grid-item">XB</div>
-              <div class="grid-item">f(XB)</div>
-              <div class="grid-item">XN</div>
-              <div class="grid-item">f(XN)</div>
-              <div class="grid-item">Erro</div>
-        </div>
-        <div id="container"></div>
+        <div id="container"></div>  
     </div>
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <div class="nav justify-content-center">
                     <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-                    <script>
-                     //var xValues = [50,60,70,80,90,100,110,120,130,140,150, 160  ];
-                     //var yValues = [7,8,8,9,9,9,10,11,14,14,30, 32];
-
-                   /* new Chart("myChart", {
-                    type: "line",
-                    data: {
-                    labels: xValues,
-                 datasets: [{
-                 fill: false,
-                 lineTension: 0,
-                 backgroundColor: "rgba(0,0,255,1.0)",
-                 borderColor: "rgba(0,0,255,0.1)",
-                data: yValues
-            }]
-         },
-  options: {
-    legend: {display: false},
-    scales: {
-      yAxes: [{ticks: {min: 6, max:32}}],
-    }
-  }
-});*/
-                        </script>
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
@@ -112,58 +78,141 @@
 
     <script>
 
-function addFields(){
-    // container.style.setProperty('--grid-rows', rows);
-    // container.style.setProperty('--grid-cols', cols);
-            // Generate a dynamic number of inputs
-            var number = document.getElementById("number").value;
-            // Get the element where the inputs will be added to
-            var container = document.getElementById("container");
-            // Remove every children it had before
-            while (container.hasChildNodes()) {
-                container.removeChild(container.lastChild);
-            }
-            for (i=0;i<number;i++){
-                // Append a node with a random text
-                // var varNames = ["name1","name2","name3"];
-                // for (var i=0;i<varNames.length;i+=1){
-                // window[varNames[i]] = 0;
-                container.appendChild(document.createTextNode("Collumn " + (i+1)));
-                // Create an <input> element, set its type and name attributes
-                var input = document.createElement("input");
-                input.type = "number";
-                input.name = "matriz" + i;
-                container.appendChild(input).className= "grid-item";
-                // Append a line break 
-                container.appendChild(document.createElement("br"));
-            }
-        }
+    const container = document.getElementById("container");
+
+    function addFields(rows, cols){
+
+      var cols = document.getElementById("cols").value;
+      var rows = document.getElementById("cols").value;
+      var fields = [];
+      
+      container.style.setProperty('--grid-rows', rows);
+      container.style.setProperty('--grid-cols', cols);
+
+      for (i=0;i< (rows * cols); i++){ 
+        let cell = document.createElement("input");
+        cell.type = "number";
+        cell.id = 'input' + i;
+        fields[i];
+        container.appendChild(cell).className = "grid-item";
+      }
+    }
+
+    function getFields(){
+      alert(JSON.stringify(input))
+    }
+
+// function addFields(){
+//           //  container.style.setProperty('--grid-rows', rows);
+//           //  container.style.setProperty('--grid-cols', cols);
+//             // Generate a dynamic number of inputs
+//             var number = document.getElementById("number").value;
+//             // Get the element where the inputs will be added to
+//             var container = document.getElementById("container");
+//             // Remove every children it had before
+//             while (container.hasChildNodes()) {
+//                 container.removeChild(container.lastChild);
+//             }
+//             for (i=0;i<number;i++){
+//                 // Append a node with a random text
+//                 // var varNames = ["name1","name2","name3"];
+//                 // for (var i=0;i<varNames.length;i+=1){
+//                 // window[varNames[i]] = 0;
+//                 // container.appendChild(document.createTextNode("Collumn " + (i+1)));
+//                 // container.appendChild(document.createTextNode("Row " + (i+1)));
+//                 // Create an <input> element, set its type and name attributes
+//                 var input = document.createElement("input");
+//                 var row = document.createElement("input");
+//                 input.type = "number";
+//                 input.name = "matriz" + i;  
+//                 container.appendChild(input).className= "grid-item";
+//                 container.appendChild(document.createElement("br"));
+//                 container.appendChild(row).className= "grid-item";
+//                 // Append a line break 
+//             }
+//         }
+
         
         // Sets important constants and variables
     
       function teste(){
-        i = 3; //inserir valor das linhas
-        j = 3; //inserir valor das colunas
 
-        for (p = 0; p < 9; p++){
+        let valor = [];
 
-          pivo = valor[i, j];
+        valor[0, 0]= 3;
+        valor[0, 1]= 2;
+        valor[0, 2]= 4;
+        valor[0, 3]= 1;
 
-          for(o = 2; o < i; o++){//o = linha 
+        valor[1, 0]= 1;
+        valor[1, 1]= 1;
+        valor[1, 2]= 2;
+        valor[1, 3]= 2;
 
-            for(k = (o-1); k < (o+1); k++){ //k = coluna
-              m[o, k] = valor[o, k]/pivo;
-              m = m[o, k];
-              valor[o, k] = m[o, k] - (pivo * valor[o, j]);
+        valor[2, 0]= 4;
+        valor[2, 1]= 3;
+        valor[2, 2]= -2;
+        valor[2, 3]= 3;
 
+        var m;
+        var x = [];
+
+        for(var cont = 0; cont < 2; cont++){
+          i = 2; //inserir valor das linhas - 1 
+          j = 3;
+          for(var l = 0; l<(i+1); l++){
+            pivo = valor[l, l];
+            
+            for(var o = l+1; o < i+1; o++){//o = linha = 2
+              for(var k = (o-1); k < j+1; k++){ //k = coluna = 2
+                m = valor[o, k]/pivo;
+                valor[o, k] = valor[o, k] - (m * pivo);
+              }
+                
+            }
           }
-
-          }
+        }
+        console.log(valor[0, 0]);
+        console.log(valor[0, 1]);
+        console.log(valor[0, 2]);
+        console.log(valor[0, 3]);
+        console.log(valor[1, 0]);
+        console.log(valor[1, 1]);
+        console.log(valor[1, 2]);
+        console.log(valor[1, 3]);
+        console.log(valor[2, 0]);
+        console.log(valor[2, 1]);
+        console.log(valor[2, 2]);
+        console.log(valor[2, 3]);
+        
+            linhas = i;
+            x[3] =  valor[linhas, j]/valor[linhas, (j-1)];
+            while(linhas > -1){
+              valor[linhas, (j-1)] = x[3]*valor[linhas, (j-1)]; //i=2
+              linhas--;
+            }
+            
+            linhas = i;
+            x[2] = (valor[linhas, j] - valor[linhas, (j-1)])/valor[linhas, (j-2)];
+            while(linhas > -1){
+              valor[linhas, (j-2)] = x[2]*valor[linhas, (j-2)]; 
+              linhas--;
+            }
+            
+            linhas = i;
+            x[1] = (valor[linhas, j] - valor[linhas, (j-1)] - valor[linhas, (j-2)])/valor[linhas, (j-3)];
+            while(linhas > -1){
+              valor[linhas, (j-3)] = x[1]*valor[linhas, (j-3)]; 
+              linhas--;
+            }
           
-
+          console.log(x[1]);
+          console.log(x[2]);
+          console.log(x[3]);
         }
 
-      }
+
+      
       
     </script>
     
