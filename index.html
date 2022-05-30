@@ -165,8 +165,6 @@
         var cellPermut;
         var resultPermut;
         cols--;
-        console.log(cols);
-        console.log(rows);
 
         for(var l=0; l<rows; l++){        
           for (var c=0; c<cols; c++){
@@ -195,11 +193,15 @@
         j = i; // quantidade de colunas
         i = i-1; // quantidade de linhas
         var x = [];
+        var m =[];
+        var matrizU =[];
+        var matrizL =[];
         var sum = 0;
         var matrizP = [];
         var arrayA = [];
         var arrayT = [];
-        // matrizP.length = arrLenght;
+
+        // matriz identidade
         for(v = 0; v< j*j; v++){
           arrayA.push(0);
         }
@@ -207,19 +209,30 @@
             arrayT = arrayA.slice(v, v+j);
             matrizP.push(arrayT);
         }
+        for(v = 0; v < j*j; v = v+j){
+            arrayT = arrayA.slice(v, v+j);
+            matrizU.push(arrayT);
+        }
+        for(v = 0; v < j*j; v = v+j){
+            arrayT = arrayA.slice(v, v+j);
+            matrizL.push(arrayT);
+        }
         for(var l = 0; l<j; l++){
           for(var k = 0; k < j; k++){
             if(l == k){
               matrizP[l][k] = 1;
+              matrizL[l][k] = 1;
+              matrizU[l][k] = 1;
             }else{
               matrizP[l][k] = 0;
+              matrizL[l][k] = 0;
+              matrizU[l][k] = 0;
             }
-          }
+          } 
         }
-        // for(var l = 0; l<j; l++){
-        // matrizP[l].splice(-1);
-        // }
- 
+        console.log(matrizL);
+
+        //definir se alguma linha inicia com 0, para realizar troca
         for(l = 0; l<i+1; l++){
           if(valor[l][0] == 0){
               var troca = valor[1];
@@ -231,42 +244,68 @@
               break;
           }
         }
+
+
         for(var l = 0; l<i; l++){
           pivo = valor[l][l]; 
 
           for(var o = l+1; o < i+1; o++){
-            var m = valor[o][l]/pivo;
+            m[l] = valor[o][l]/pivo;
             var a = 0;
 
             for(var k = 0; k < j; k++){ 
-              if(valor[o][0]==0){
-                for(var k = 1; k < j; k++){ 
-                  a++;
-                  if(valor[o][k]!= 0){
-                    break;
-                  }
-                }
-                if(a == o){
-                  var troca = valor[l];
-                  valor[l] = valor[o];
-                  valor[o] = troca;
-                  mT = matrizP[l];
-                  matrizP[l] = matrizP[o];
-                  matrizP[o] = mT;
-                  o++;
-                  
-                  break;
-                }
+              if(valor[o][k]==0){
+              
               }else{
                 for(var k = 0; k < j+1; k++){ 
-                  val = (valor[o][k]) - (m * valor[l][k]);//0
+                  val = (valor[o][k]) - (m[l] * valor[l][k]);//0
                   valor[o][k] = val.toFixed(3);
                 }
               }
             } 
           }
+          
+          //definir valores para a matriz U e L
+          var percorreM = 0;
+          for(var l = 0; l<j; l++){
+            for(var k = 0; k < j; k++){ 
+              matrizU[l][k] = valor[l][k];
+              if(k < l){
+                matrizL[l][k] = m[percorreM];
+                percorreM++;
+              }
+            }
+          }
+          
+          for(var o = l+1; o < i+1; o++){
+            for(var k = 0; k < j; k++){ 
+              if(valor[o][k]!= 0){
+                break;
+              }else{
+                a++;
+              }
+            }
+            if(a > o){
+              var troca = valor[a];
+              valor[a] = valor[o];
+              valor[o] = troca;
+              mT = matrizP[a];
+              matrizP[a] = matrizP[o];
+              matrizP[o] = mT;
+              l++
+
+              break;
+
+            }
+          }
         }
+
         
+
+        console.log(m);
+        console.log(matrizU);
+        console.log(matrizL);
+
         let matriz = valor;
         let matrizPermuta = matrizP;
 
