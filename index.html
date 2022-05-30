@@ -69,6 +69,8 @@
     </div>
     <h3 class="centered">Matriz A:</h3>
     <div id="containerResult"></div><br>
+    <h3 class="centered">Matriz I ou Matriz P:</h3>
+    <div id="containerResultPermut"></div><br>
       </div></div><br>
     <h3 class="centered">Matriz X:</h3>
     <div id="output"></div><br>
@@ -85,6 +87,7 @@
 
     const container = document.getElementById("container");
     const containerResult = document.getElementById("containerResult");
+    const containerResultPermut = document.getElementById("containerResultPermut");
 
     function addFields(rows, cols){
 
@@ -131,16 +134,21 @@
 
     }
     
-      function generatedResult(matriz){
+      function generatedResult(matriz, matrizPermuta){
         
         var cols = document.getElementById("cols").value;
+
         cols++;
+
         var rows = document.getElementById("cols").value;
-        var cellResult;
         
         containerResult.style.setProperty('--grid-rows', rows);
         containerResult.style.setProperty('--grid-cols', cols);
+        
+        containerResultPermut.style.setProperty('--grid-rows', rows);
+        containerResultPermut.style.setProperty('--grid-cols', cols);
 
+        var cellResult;
         var resultValue;
         for(var l=0; l<rows; l++){        
           for (var c=0; c<cols; c++){
@@ -149,8 +157,25 @@
             cellResult.type = "number";
             resultValue = matriz[l][c];
             cellResult.innerText= (resultValue);
-            // console.log(resultValue);
             containerResult.appendChild(cellResult).className = "grid-item-result";
+          }
+          
+        }
+
+        var cellPermut;
+        var resultPermut;
+        cols--;
+        console.log(cols);
+        console.log(rows);
+
+        for(var l=0; l<rows; l++){        
+          for (var c=0; c<cols; c++){
+            cellPermut = document.createElement("div");
+            cellPermut.disabled;
+            cellPermut.type = "number";
+            resultPermut = matrizPermuta[l][c];
+            cellPermut.innerText= (resultPermut);
+            containerResultPermut.appendChild(cellPermut).className = "grid-item-result-permut";
           }
           
         }
@@ -163,41 +188,89 @@
       function eliminaoGau(arrayB){
         
         let valor = arrayB;
+        // let arrLenght = valor.length - 1;
 
         var i = document.getElementById("cols").value;
         i = parseInt(i);
         j = i; // quantidade de colunas
         i = i-1; // quantidade de linhas
         var x = [];
-
+        var sum = 0;
+        var matrizP = [];
+        var arrayA = [];
+        var arrayT = [];
+        // matrizP.length = arrLenght;
+        for(v = 0; v< j*j; v++){
+          arrayA.push(0);
+        }
+        for(v = 0; v < j*j; v = v+j){
+            arrayT = arrayA.slice(v, v+j);
+            matrizP.push(arrayT);
+        }
+        for(var l = 0; l<j; l++){
+          for(var k = 0; k < j; k++){
+            if(l == k){
+              matrizP[l][k] = 1;
+            }else{
+              matrizP[l][k] = 0;
+            }
+          }
+        }
+        // for(var l = 0; l<j; l++){
+        // matrizP[l].splice(-1);
+        // }
+ 
         for(l = 0; l<i+1; l++){
           if(valor[l][0] == 0){
               var troca = valor[1];
               valor[1] = valor[l];
               valor[l] = troca;
+              mT = matrizP[1];
+              matrizP[1] = matrizP[l];
+              matrizP[l] = mT;
               break;
           }
         }
         for(var l = 0; l<i; l++){
           pivo = valor[l][l]; 
+
           for(var o = l+1; o < i+1; o++){
             var m = valor[o][l]/pivo;
+            var a = 0;
 
-            if(valor[o][k]==0){
-              
-            }else{
-              for(var k = 0; k < j+1; k++){ 
-                val = (valor[o][k]) - (m * valor[l][k]);
-                valor[o][k] = val.toFixed(3);
+            for(var k = 0; k < j; k++){ 
+              if(valor[o][0]==0){
+                for(var k = 1; k < j; k++){ 
+                  a++;
+                  if(valor[o][k]!= 0){
+                    break;
+                  }
+                }
+                if(a == o){
+                  var troca = valor[l];
+                  valor[l] = valor[o];
+                  valor[o] = troca;
+                  mT = matrizP[l];
+                  matrizP[l] = matrizP[o];
+                  matrizP[o] = mT;
+                  o++;
+                  
+                  break;
+                }
+              }else{
+                for(var k = 0; k < j+1; k++){ 
+                  val = (valor[o][k]) - (m * valor[l][k]);//0
+                  valor[o][k] = val.toFixed(3);
+                }
               }
-            }
-            
+            } 
           }
         }
         
         let matriz = valor;
+        let matrizPermuta = matrizP;
 
-        generatedResult(matriz);
+        generatedResult(matriz, matrizPermuta);
 
         for(y=i; y>-1; y--){ // y = ultima linha ate linha 0
           result = valor[y][j]; // linha y , ultima coluna = resultado da funcao
@@ -222,6 +295,8 @@
           text += x[z];
           text += "<br>";
       }
+      
+      console.log(matrizP);
       document.getElementById('output').innerHTML = text;
     }
       
