@@ -26,38 +26,16 @@
     </div>
           <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><div class="nav justify-content-center">
-                <!-- <p><mark>Critério de Parada |</mark>&nbsp;</p> -->
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
                     <label class="form-check-label" for="flexRadioDefault1">
                       Método de Gauss &nbsp;
                     </label>
                   </div>
-                  <!-- <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" disabled="disabled">
-                    <label class="form-check-label" for="flexRadioDefault2">
-                        | Xn - Xn - 1 | Precisão &nbsp;
-                    </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" disabled="disabled">
-                        <label class="form-check-label" for="flexRadioDefault3">
-                            | Xn - Xn - 1 / |Xn| | Precisão &nbsp;
-                        </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" disabled="disabled">
-                    <label class="form-check-label" for="flexRadioDefault4">
-                        | Xb - Xa | Precisão &nbsp;
-                    </label> -->
             </div>
         </div>
         <div class="nav justify-content-center">
             <p>Ordem: &nbsp;<input id="cols" type="number">&nbsp;</p><br>
-            <!-- <p>Entre com a função &nbsp;<input id="inputFunc">&nbsp;</p><br>
-            <p >X Inicial (A): &nbsp;<input id="valueA">&nbsp;</p><br>
-            <p >X Inicial (B): &nbsp;<input id="valueB">&nbsp;</p><br>
-            <p >Precisão: &nbsp;<input id="precision">&nbsp;</p><br> -->
         </div>
         <div class="nav justify-content-center">
             <button type="button" class="btn btn-success" onclick="getFields()">Calcula</button>&nbsp;<br>
@@ -69,19 +47,22 @@
     </div>
     <h3 class="centered">Matriz A:</h3>
     <div id="containerResult"></div><br>
-    <h3 class="centered">Matriz I ou Matriz P:</h3>
-    <div id="containerResultPermut"></div><br>
+    <!-- <h3 class="centered">Matriz I ou Matriz P:</h3>
+    <div id="containerResultPermut"></div><br> -->
       </div></div><br>
     <h3 class="centered">Matriz X:</h3>
     <div id="output"></div><br>
+    <h3 class="centered">Matriz P ou I:</h3>
+    <div id="output2"></div><br>
+    <h3 class="centered">Matriz L:</h3>
+    <div id="output3"></div><br>
+    <h3 class="centered">Matriz U:</h3>
+    <div id="output4"></div><br>
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                 <div class="nav justify-content-center">
                     <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
                 </div>
             </div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-          </div>
-    </div>
 
     <script>
 
@@ -134,7 +115,7 @@
 
     }
     
-      function generatedResult(matriz, matrizPermuta){
+    function generatedResult(matriz, matrizPermuta, m, matrizU){
         
         var cols = document.getElementById("cols").value;
 
@@ -145,8 +126,8 @@
         containerResult.style.setProperty('--grid-rows', rows);
         containerResult.style.setProperty('--grid-cols', cols);
         
-        containerResultPermut.style.setProperty('--grid-rows', rows);
-        containerResultPermut.style.setProperty('--grid-cols', cols);
+        // containerResultPermut.style.setProperty('--grid-rows', rows);
+        // containerResultPermut.style.setProperty('--grid-cols', cols);
 
         var cellResult;
         var resultValue;
@@ -162,25 +143,47 @@
           
         }
 
+        var identidade = '';
+        var mU = '';
+        var mM = '';
         var cellPermut;
         var resultPermut;
+        var resultM;
+        var resultU;
+
         cols--;
 
-        for(var l=0; l<rows; l++){        
+        for(var l=0; l<rows; l++){       
           for (var c=0; c<cols; c++){
-            cellPermut = document.createElement("div");
-            cellPermut.disabled;
-            cellPermut.type = "number";
+            // cellPermut = document.createElement("div");
+            // cellPermut.disabled;
+            // cellPermut.type = "number";
             resultPermut = matrizPermuta[l][c];
-            cellPermut.innerText= (resultPermut);
-            containerResultPermut.appendChild(cellPermut).className = "grid-item-result-permut";
+            resultM = m[l][c];
+            resultU = matrizU[l][c];
+            // cellPermut.innerText= (resultPermut);
+            // containerResultPermut.appendChild(cellPermut).className = "grid-item-result-permut";
+
+            identidade += resultPermut;
+            identidade += "<td>" + "&nbsp" + "&nbsp";
+            document.getElementById('output2').innerHTML = identidade;
+
+            mM += resultM;
+            mM += "<td>" + "&nbsp" + "&nbsp";
+            document.getElementById('output3').innerHTML = mM;
+
+            console.log(mU);
+            mU += resultU;
+            mU += "<td>" + "&nbsp" + "&nbsp";
+            document.getElementById('output4').innerHTML = mU;
           }
-          
+          identidade += "<br>";
+          mM += "<br>";
+          mU += "<br>";
         }
 
 
       }
-
       
 
       function eliminaoGau(arrayB){
@@ -304,19 +307,18 @@
         for(var l = 0; l<j; l++){
           for(var c = 0; c<j; c++){
             if(l==c){
-              m[l][c] == 1;
+              m[l][c] = 1;
             }
           }
         }
         
 
-        console.log(m);
         console.log(matrizU);
 
         let matriz = valor;
         let matrizPermuta = matrizP;
 
-        generatedResult(matriz, matrizPermuta);
+        generatedResult(matriz, matrizPermuta, m, matrizU);
 
         for(y=i; y>-1; y--){ // y = ultima linha ate linha 0
           result = valor[y][j]; // linha y , ultima coluna = resultado da funcao
