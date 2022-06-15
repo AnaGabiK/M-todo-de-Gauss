@@ -13,29 +13,28 @@
     <title>Calculadora Resolução de Sistemas Lineares</title>
   </head>
   <body>
-    <h1 class="nav justify-content-center">Sistema Linear</h1><br>
+    <h1 class="nav justify-content-center">Sistema Linear Método de Gauss</h1><br>
     <div class="nav justify-content-center">
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Metodo de Gauss</button>
-            </li>
+          <li>
+            <a class="btn btn-primary btn-lg active" href="index.html" role="button" aria-pressed="true">Método de Gauss</a>
+          </li>&nbsp;
+          <li>
+            <a class="btn btn-primary" href="seidel.html" role="button">Método de Gauss Seidel</a>
+          </li>
             <!-- <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="valorPlotGraph()">Gráfico</button>
             </li> -->
           </ul>
     </div>
-          <div class="tab-content" id="pills-tabContent">
+
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><div class="nav justify-content-center">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-                    <label class="form-check-label" for="flexRadioDefault1">
-                      Método de Gauss &nbsp;
-                    </label>
-                  </div>
             </div>
         </div>
         <div class="nav justify-content-center">
-            <p>Ordem: &nbsp;<input id="cols" type="number">&nbsp;</p><br>
+            <p>&nbsp;
+              <input class="form-control form-control-lg" id="cols" type="number" placeholder="Ordem">&nbsp;
+            </p><br>
         </div>
         <div class="nav justify-content-center">
             <button type="button" class="btn btn-success" onclick="getFields()">Calcula</button>&nbsp;<br>
@@ -44,12 +43,8 @@
             <p id="resultadosFunc"></p>
         </div><br>
         <div id="container"></div><br>
-    </div>
     <h3 class="centered">Matriz A:</h3>
     <div id="containerResult"></div><br>
-    <!-- <h3 class="centered">Matriz I ou Matriz P:</h3>
-    <div id="containerResultPermut"></div><br> -->
-      </div></div><br>
     <h3 class="centered">Matriz X:</h3>
     <div id="output"></div><br>
     <h3 class="centered">Matriz P ou I:</h3>
@@ -76,11 +71,8 @@
       cols++;
       var rows = document.getElementById("cols").value;
 
-      
       container.style.setProperty('--grid-rows', rows);
       container.style.setProperty('--grid-cols', cols);
-      containerResult.style.setProperty('--grid-rows', rows);
-      containerResult.style.setProperty('--grid-cols', cols);
 
       for (i=0;i < (rows * cols); i++){ 
         let cell = document.createElement("input");
@@ -88,13 +80,12 @@
         cell.placeholder = "Número: " + i;
         cell.id = 'input' + i;
         container.appendChild(cell).className = "grid-item";
-        
-      } 
+      }
 
     }
 
     function getFields(){
-
+    
           var arrayA = [];
           var arrayB = [];
           var arrayT = [];
@@ -181,6 +172,7 @@
           mM += "<br>";
           mU += "<br>";
         }
+
 
 
       }
